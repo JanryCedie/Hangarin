@@ -101,3 +101,6 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     template_name = 'todo/task_confirm_delete.html'
     success_url = reverse_lazy('task-list')
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'todo/profile.html'

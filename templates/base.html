@@ -147,8 +147,8 @@
         {% block extra_css %}{% endblock %}
     </style>
 </head>
-<body class="{% if request.resolver_match.url_name == 'dashboard' or 'task' in request.resolver_match.url_name %}has-sidebar{% endif %}">
-    {% if request.resolver_match.url_name == 'dashboard' or 'task' in request.resolver_match.url_name %}
+<body class="{% if request.resolver_match.url_name == 'dashboard' or 'task' in request.resolver_match.url_name or request.resolver_match.url_name == 'profile' %}has-sidebar{% endif %}">
+    {% if request.resolver_match.url_name == 'dashboard' or 'task' in request.resolver_match.url_name or request.resolver_match.url_name == 'profile' %}
     <div class="sidebar">
         <div class="sidebar-header">HANGARIN</div>
         <ul class="nav-links">
@@ -160,6 +160,11 @@
             <li class="nav-item">
                 <a href="{% url 'task-list' %}" class="nav-link {% if request.resolver_match.url_name == 'task-list' %}active{% endif %}">
                     <i class="fas fa-tasks"></i> Tasks
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'profile' %}" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                    <i class="fas fa-user-circle"></i> Profile
                 </a>
             </li>
             <li class="nav-item" style="margin-top: auto;">

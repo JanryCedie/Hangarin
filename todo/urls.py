@@ -4,7 +4,7 @@ from allauth.account import views as allauth_views
 from . import views
 from .views import (
     DashboardView, TaskListView, TaskDetailView, 
-    TaskCreateView, TaskUpdateView, TaskDeleteView
+    TaskCreateView, TaskUpdateView, TaskDeleteView, ProfileView
 )
 
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     path('tasks/add/', TaskCreateView.as_view(), name='task-add'),
     path('tasks/<int:pk>/edit/', TaskUpdateView.as_view(), name='task-edit'),
     path('tasks/<int:pk>/delete/', TaskDeleteView.as_view(), name='task-delete'),
+    path('profile/', ProfileView.as_view(), name='profile'),
     
     # Auth
     path('login/', auth_views.LoginView.as_view(template_name='todo/login.html'), name='login'),
