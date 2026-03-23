@@ -25,10 +25,10 @@ SECRET_KEY = 'django-insecure-rn@li)8ddoe_4(s8_w^rq4e%mold8uawyxc#jy!%@j=24uyzk7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['JanryCedie.pythonanywhere.com', 'localhost', '127.0.0.1', '*']
+ALLOWED_HOSTS = ['Janry2.pythonanywhere.com', 'localhost', '127.0.0.1', '*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://JanryCedie.pythonanywhere.com',
+    'https://Janry2.pythonanywhere.com',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
 ]
