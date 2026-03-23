@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Task Details | Hangarin{% endblock %}
+{% block page_title %}Task Details{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'task-edit' task.pk %}" class="btn btn-primary" style="margin-right: 0.5rem;">
+    <i class="fas fa-edit"></i> Edit
+</a>
+<a href="{% url 'task-list' %}" class="btn" style="background: rgba(255,255,255,0.1); color: white;">
+    <i class="fas fa-arrow-left"></i> Back
+</a>
+{% endblock %}
+
+{% block content %}
+<style>
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
+
+    .info-group {
+        margin-bottom: 2rem;
+    }
+
+    .info-label {
+        color: var(--text-muted);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .subtask-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .subtask-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtask-item i {
+        margin-right: 0.75rem;
+        color: var(--primary);
+    }
+</style>
+
+<div class="detail-grid">
+    <div class="card">
+        <div class="info-group">
+            <div class="info-label">Title</div>
+            <div class="info-value" style="font-size: 1.5rem; font-weight: 700;">{{ task.title }}</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Description</div>
+            <div class="info-value">{{ task.description|default:"No description provided." }}</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Sub-Tasks</div>
+            <ul class="subtask-list">
+                {% for sub in task.subtasks.all %}
+                <li class="subtask-item">
+                    <i class="fas {% if sub.status == 'Completed' %}fa-check-circle{% else %}fa-circle-notch fa-spin{% endif %}"></i>
+                    {{ sub.title }} ({{ sub.status }})
+                </li>
+                {% empty %}
+                <p style="color: var(--text-muted);">No sub-tasks found.</p>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="info-group">
+            <div class="info-label">Notes</div>
+            {% for note in task.notes.all %}
+            <div class="card" style="background: rgba(255,255,255,0.02); margin-bottom: 1rem; padding: 1rem;">
+                {{ note.content }}
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">{{ note.created_at|date:"M d, Y H:i" }}</div>
+            </div>
+            {% empty %}
+            <p style="color: var(--text-muted);">No notes found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top: 0;">Status & Meta</h3>
+        <div class="info-group">
+            <div class="info-label">Status</div>
+            <div class="status-badge badge-{% if task.status == 'Pending' %}pending{% elif task.status == 'In Progress' %}progress{% else %}completed{% endif %}" style="display: inline-block;">
+                {{ task.status }}
+            </div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Priority</div>
+            <div class="info-value">{{ task.priority.name }}</div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Category</div>
+            <div class="info-value">{{ task.category.name }}</div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Deadline</div>
+            <div class="info-value">{{ task.deadline|date:"M d, Y H:i" }}</div>
+        </div>
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+        <div class="info-group">
+            <div class="info-label">Created At</div>
+            <div class="info-value" style="font-size: 0.9rem;">{{ task.created_at|date:"M d, Y H:i" }}</div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Last Updated</div>
+            <div class="info-value" style="font-size: 0.9rem;">{{ task.updated_at|date:"M d, Y H:i" }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

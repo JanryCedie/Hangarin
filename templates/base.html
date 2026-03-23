@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hangarin Task Manager{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-hover: #1e40af;
+            --bg-dark: #f8fafc;
+            --card-bg: #ffffff;
+            --text-light: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --accent-gradient: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            background: var(--bg-dark);
+            transition: margin-left 0.3s ease;
+        }
+
+        body.has-sidebar .main-content {
+            margin-left: 260px;
+        }
+
+        body:not(.has-sidebar) .main-content {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Simplified Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        {% block extra_css %}{% endblock %}
+    </style>
+</head>
+<body class="{% if request.resolver_match.url_name == 'dashboard' or 'task' in request.resolver_match.url_name %}has-sidebar{% endif %}">
+    {% if request.resolver_match.url_name == 'dashboard' or 'task' in request.resolver_match.url_name %}
+    <div class="sidebar">
+        <div class="sidebar-header">HANGARIN</div>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'task-list' %}" class="nav-link {% if request.resolver_match.url_name == 'task-list' %}active{% endif %}">
+                    <i class="fas fa-tasks"></i> Tasks
+                </a>
+            </li>
+            <li class="nav-item" style="margin-top: auto;">
+                <form action="{% url 'logout' %}" method="post" id="logout-form" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a href="javascript:document.getElementById('logout-form').submit();" class="nav-link" style="color: #ef4444;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+
+    <main class="main-content">
+        <div class="header">
+            <h1>{% block page_title %}{% endblock %}</h1>
+            <div>
+                {% block header_actions %}{% endblock %}
+            </div>
+        </div>
+
+        <div class="content animate-fade">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <script>
+        {% block extra_js %}{% endblock %}
+    </script>
+</body>
+</html>

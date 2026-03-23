@@ -1,0 +1,12 @@
+/* Hide Jazzmin Footer (Branding and Version) */
+.main-footer, 
+.main-footer strong, 
+.main-footer .float-right {
+    display: none !important;
+}
+
+/* Ensure content takes full height */
+.content-wrapper {
+    margin-bottom: 0 !important;
+    min-height: 100vh !important;
+}

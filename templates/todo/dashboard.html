@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Hangarin{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'task-add' %}" class="btn btn-primary">
+    <i class="fas fa-plus"></i> New Task
+</a>
+{% endblock %}
+
+{% block content %}
+<style>
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border-radius: 1rem;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .recent-tasks {
+        margin-top: 2rem;
+    }
+
+    .task-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: #f1f5f9;
+        border-radius: 0.75rem;
+        margin-bottom: 0.75rem;
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .task-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--border-color);
+    }
+
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 1rem;
+        font-weight: 600;
+    }
+
+    .badge-pending { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .badge-progress { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+    .badge-completed { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+</style>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-value">{{ total_tasks }}</div>
+        <div class="stat-label">Total Tasks</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ completed_tasks }}</div>
+        <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ pending_tasks }}</div>
+        <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ tasks_this_year }}</div>
+        <div class="stat-label">This Year</div>
+    </div>
+</div>
+
+<div class="recent-tasks card">
+    <h2 style="margin-top: 0; margin-bottom: 1.5rem;">Recent Tasks</h2>
+    {% for task in recent_tasks %}
+    <div class="task-item">
+        <div>
+            <div style="font-weight: 600;">{{ task.title }}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">{{ task.category.name }} • Due: {{ task.deadline|date:"M d, Y" }}</div>
+        </div>
+        <div class="status-badge badge-{% if task.status == 'Pending' %}pending{% elif task.status == 'In Progress' %}progress{% else %}completed{% endif %}">
+            {{ task.status }}
+        </div>
+    </div>
+    {% empty %}
+    <p style="color: var(--text-muted);">No tasks yet. Create your first task!</p>
+    {% endfor %}
+</div>
+{% endblock %}
