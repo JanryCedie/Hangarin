@@ -16,6 +16,7 @@ urlpatterns = [
     path('tasks/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
     path('tasks/add/', TaskCreateView.as_view(), name='task-add'),
     path('tasks/<int:pk>/edit/', TaskUpdateView.as_view(), name='task-edit'),
+    path('tasks/<int:pk>/delete/', TaskDeleteView.as_view(), name='task-delete'),
     path('profile/', ProfileView.as_view(), name='profile'),
     
     # Category CRUD
