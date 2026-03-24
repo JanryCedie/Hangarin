@@ -1,0 +1,9 @@
+{% extends 'todo/task_form.html' %}
+{% block title %}{% if object %}Edit Priority{% else %}New Priority{% endif %} | Hangarin{% endblock %}
+{% block page_title %}{% if object %}Edit Priority{% else %}Create Priority{% endif %}{% endblock %}
+{% block form_actions %}
+    <a href="{% url 'priority-list' %}" class="btn" style="background: rgba(255,255,255,0.05); color: white;">Cancel</a>
+    <button type="submit" class="btn btn-primary">
+        {% if object %}Update Priority{% else %}Save Priority{% endif %}
+    </button>
+{% endblock %}

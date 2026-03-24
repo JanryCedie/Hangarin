@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories | Hangarin{% endblock %}
+{% block page_title %}Categories{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'category-add' %}" class="btn btn-primary">
+    <i class="fas fa-plus"></i> New Category
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                <th style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Name</th>
+                <th style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; text-align: right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.02)'" onmouseout="this.style.background='transparent'">
+                <td style="padding: 1rem; font-weight: 600;">{{ category.name }}</td>
+                <td style="padding: 1rem; text-align: right;">
+                    <a href="{% url 'category-edit' category.pk %}" style="color: var(--primary); margin-right: 1rem; text-decoration: none;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'category-delete' category.pk %}" style="color: #ef4444; text-decoration: none;"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" style="padding: 2rem; text-align: center; color: var(--text-muted);">No categories found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

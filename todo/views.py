@@ -6,7 +6,8 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from .models import Task, Category, Priority
+from .models import Task, Category, Priority, SubTask
+from .forms import TaskForm, CategoryForm, PriorityForm, SubTaskForm
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'todo/dashboard.html'
@@ -87,14 +88,14 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
+    form_class = TaskForm
     template_name = 'todo/task_form.html'
-    fields = ['title', 'category', 'priority', 'deadline', 'status', 'description']
     success_url = reverse_lazy('task-list')
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
+    form_class = TaskForm
     template_name = 'todo/task_form.html'
-    fields = ['title', 'category', 'priority', 'deadline', 'status', 'description']
     success_url = reverse_lazy('task-list')
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
@@ -104,3 +105,72 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'todo/profile.html'
+
+# Category CRUD
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
+    template_name = 'todo/category_list.html'
+    context_object_name = 'categories'
+
+class CategoryCreateView(LoginRequiredMixin, CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'todo/category_form.html'
+    success_url = reverse_lazy('category-list')
+
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'todo/category_form.html'
+    success_url = reverse_lazy('category-list')
+
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
+    model = Category
+    template_name = 'todo/category_confirm_delete.html'
+    success_url = reverse_lazy('category-list')
+
+# Priority CRUD
+class PriorityListView(LoginRequiredMixin, ListView):
+    model = Priority
+    template_name = 'todo/priority_list.html'
+    context_object_name = 'priorities'
+
+class PriorityCreateView(LoginRequiredMixin, CreateView):
+    model = Priority
+    form_class = PriorityForm
+    template_name = 'todo/priority_form.html'
+    success_url = reverse_lazy('priority-list')
+
+class PriorityUpdateView(LoginRequiredMixin, UpdateView):
+    model = Priority
+    form_class = PriorityForm
+    template_name = 'todo/priority_form.html'
+    success_url = reverse_lazy('priority-list')
+
+class PriorityDeleteView(LoginRequiredMixin, DeleteView):
+    model = Priority
+    template_name = 'todo/priority_confirm_delete.html'
+    success_url = reverse_lazy('priority-list')
+
+# SubTask CRUD
+class SubTaskListView(LoginRequiredMixin, ListView):
+    model = SubTask
+    template_name = 'todo/subtask_list.html'
+    context_object_name = 'subtasks'
+
+class SubTaskCreateView(LoginRequiredMixin, CreateView):
+    model = SubTask
+    form_class = SubTaskForm
+    template_name = 'todo/subtask_form.html'
+    success_url = reverse_lazy('subtask-list')
+
+class SubTaskUpdateView(LoginRequiredMixin, UpdateView):
+    model = SubTask
+    form_class = SubTaskForm
+    template_name = 'todo/subtask_form.html'
+    success_url = reverse_lazy('subtask-list')
+
+class SubTaskDeleteView(LoginRequiredMixin, DeleteView):
+    model = SubTask
+    template_name = 'todo/subtask_confirm_delete.html'
+    success_url = reverse_lazy('subtask-list')

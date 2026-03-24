@@ -1,0 +1,9 @@
+{% extends 'todo/task_form.html' %}
+{% block title %}{% if object %}Edit Category{% else %}New Category{% endif %} | Hangarin{% endblock %}
+{% block page_title %}{% if object %}Edit Category{% else %}Create Category{% endif %}{% endblock %}
+{% block form_actions %}
+    <a href="{% url 'category-list' %}" class="btn" style="background: rgba(255,255,255,0.05); color: white;">Cancel</a>
+    <button type="submit" class="btn btn-primary">
+        {% if object %}Update Category{% else %}Save Category{% endif %}
+    </button>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'todo/task_form.html' %}
+{% block title %}{% if object %}Edit Subtask{% else %}New Subtask{% endif %} | Hangarin{% endblock %}
+{% block page_title %}{% if object %}Edit Subtask{% else %}Create Subtask{% endif %}{% endblock %}
+{% block form_actions %}
+    <a href="{% url 'subtask-list' %}" class="btn" style="background: rgba(255,255,255,0.05); color: white;">Cancel</a>
+    <button type="submit" class="btn btn-primary">
+        {% if object %}Update Subtask{% else %}Save Subtask{% endif %}
+    </button>
+{% endblock %}

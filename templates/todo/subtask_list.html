@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Subtasks | Hangarin{% endblock %}
+{% block page_title %}Subtasks{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'subtask-add' %}" class="btn btn-primary">
+    <i class="fas fa-plus"></i> New Subtask
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                <th style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Title</th>
+                <th style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Parent Task</th>
+                <th style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Status</th>
+                <th style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; text-align: right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subtask in subtasks %}
+            <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.02)'" onmouseout="this.style.background='transparent'">
+                <td style="padding: 1rem; font-weight: 600;">{{ subtask.title }}</td>
+                <td style="padding: 1rem; color: var(--text-muted);">{{ subtask.parent_task.title }}</td>
+                <td style="padding: 1rem;">
+                    <span style="padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 600; background: {% if subtask.status == 'Completed' %}#d1fae5; color: #065f46{% else %}#fef3c7; color: #92400e{% endif %};">
+                        {{ subtask.status }}
+                    </span>
+                </td>
+                <td style="padding: 1rem; text-align: right;">
+                    <a href="{% url 'subtask-edit' subtask.pk %}" style="color: var(--primary); margin-right: 1rem; text-decoration: none;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'subtask-delete' subtask.pk %}" style="color: #ef4444; text-decoration: none;"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-muted);">No subtasks found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
