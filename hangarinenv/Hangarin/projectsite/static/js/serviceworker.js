@@ -9,8 +9,8 @@ const assetsToCache = [
     '/static/js/core/popper.min.js',
     '/static/js/core/bootstrap.min.js',
     '/static/js/ready.min.js',
-    '/static/images/logo-192.png',
-    '/static/images/logo-512.png'
+    '/static/img/icon-192.png',
+    '/static/img/icon-512.png'
 ];
 
 // Install Event - Pre-caching core assets
