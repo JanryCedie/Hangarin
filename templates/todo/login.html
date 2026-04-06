@@ -65,8 +65,60 @@
         <div style="text-align: center; margin-top: 2.5rem; font-size: 0.85rem; color: var(--text-muted);">
             New user? <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 600;">Create an account</a>
         </div>
+
+        <!-- PWA Install Button Section -->
+        <div id="pwa-install-container" style="display: none; margin-top: 2rem; padding: 1.25rem; background: #f8fafc; border: 1px dashed var(--border-color); border-radius: 0.75rem; text-align: center; transition: all 0.3s ease;">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Get the best experience by installing our app!</p>
+            <button id="pwa-install-btn" class="btn btn-primary" style="width: 100%; justify-content: center; background: #0f172a; border: none; font-size: 0.8rem; letter-spacing: 0.5px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
+                <i class="fas fa-download" style="margin-right: 0.5rem;"></i> CLICK TO DOWNLOAD OFFLINE APP
+            </button>
+        </div>
     </div>
 </div>
+
+<script>
+    let deferredPrompt;
+    const installContainer = document.getElementById('pwa-install-container');
+    const installBtn = document.getElementById('pwa-install-btn');
+
+    // Store the event so it can be triggered later.
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent Chrome 67 and earlier from automatically showing the prompt
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        // Update UI to notify the user they can install the PWA
+        installContainer.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', (e) => {
+        // hide our custom install UI
+        installContainer.style.opacity = '0.5';
+        installBtn.disabled = true;
+        
+        // Show the prompt
+        deferredPrompt.prompt();
+        
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+                installContainer.style.display = 'none';
+            } else {
+                console.log('User dismissed the install prompt');
+                installContainer.style.opacity = '1';
+                installBtn.disabled = false;
+            }
+            deferredPrompt = null;
+        });
+    });
+
+    // Hide the button if the app is already installed
+    window.addEventListener('appinstalled', (evt) => {
+        console.log('Hangarin was installed');
+        installContainer.style.display = 'none';
+    });
+</script>
 {% endblock %}
 
 {% block sidebar %}
