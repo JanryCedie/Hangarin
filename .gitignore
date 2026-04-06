@@ -14,6 +14,7 @@ static_root/
 env/
 venv/
 ENV/
+hangarinenv/
 
 # IDEs
 .vscode/
