@@ -1,0 +1,13 @@
+/* Make the dashboard even cleaner by hiding the Recent Actions sidebar */
+#content-related {
+    display: none !important;
+}
+
+/* Jazzmin specific recent actions class if applicable */
+.recent-actions {
+    display: none !important;
+}
+
+#recent-actions {
+    display: none !important;
+}
