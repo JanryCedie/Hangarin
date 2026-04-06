@@ -1,0 +1,203 @@
+{% load socialaccount %}
+{% load pwa %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hangarin</title>
+    <!-- Line Awesome for the Google/GitHub icons -->
+    <link rel="stylesheet" href="https://maxst.icons8.com/foundation-icons/1.1/line-awesome/css/line-awesome.min.css">
+    {% progressive_web_app_meta %}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h3 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #000;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .alert-danger { color: #d00; border-color: #d00; }
+        .alert-warning { color: #880; border-color: #880; }
+        .alert-info { color: #008; border-color: #008; }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 0;
+            border: none;
+            border-bottom: 1px solid #ccc; /* Underline input style */
+            font-size: 1rem;
+            color: #000;
+            outline: none;
+            transition: border-bottom-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-bottom-color: #000;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid #000;
+            color: #000;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn-login {
+            background-color: #000;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .btn-login:hover {
+            background-color: #333;
+            border-color: #333;
+        }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            color: #999;
+            font-size: 0.85rem;
+            position: relative;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #eee;
+            z-index: 1;
+        }
+        .divider span {
+            background: #fff;
+            padding: 0 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Social buttons */
+        .social-btn i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <h3>Hangarin Login</h3>
+        </div>
+        
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            Your username and password didn't match. Please try again.
+        </div>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+            <div class="alert alert-warning">
+                Your account doesn't have access to this page. To proceed, please login with an account that has access.
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Please login to see this page.
+            </div>
+            {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'app-login' %}">
+            {% csrf_token %}
+            {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% endif %}
+            
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                <input type="text" name="username" class="form-control" autofocus required id="id_username" placeholder="Enter Username">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" class="form-control" required id="id_password" placeholder="Enter Password">
+            </div>
+
+            <button type="submit" class="btn btn-login">Login</button>
+
+            <div class="divider"><span>OR</span></div>
+
+            <a href="{% provider_login_url 'google' %}" class="btn social-btn">
+                <i class="la la-google"></i> Login with Google
+            </a>
+            <a href="{% provider_login_url 'github' %}" class="btn social-btn">
+                <i class="la la-github"></i> Login with GitHub
+            </a>
+            
+            <input type="hidden" name="next" value="{{ next|default:'' }}" />
+        </form>
+    </div>
+</body>
+</html>
